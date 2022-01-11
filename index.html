@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Pittsburgh Property Tax Disparities</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" /> -->
+
+	<!-- Load CSS -->
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Cantarell:ital@1&display=swap');
+		</style>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Cantarell:ital@1&family=Playfair+Display&display=swap');
+		</style>
+	<link rel="stylesheet" href="./index.css"/>
+
+	<!-- Load leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+	<link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+	<script type="text/javascript" src="us-states.js"></script> 
+	<script type="text/javascript" src="2010_pittsburgh.js"></script> 
+	<script type="text/javascript" src="ratios.js"></script> 
+
+	<!-- Load d3.js -->
+	<script src="https://d3js.org/d3.v7.min.js"></script>
+	<script type="module">
+		import {transition} from "https://cdn.skypack.dev/d3-transition@3";
+		</script>
+
+	<!-- Load GraphScroll -->
+	<script type="text/javascript" src="graph-scroll.js"></script>
+
+</head>
+<body>
+	<div class="menu">
+		<a href="https://mattress.org/works/sed-valorem/"><img src='./logo.svg' style="height:20px"></img></a>
+		<a href="index.html" style="color: #eb1000">Report</a>
+		<a href="about.html">About This Project</a>
+		<!--<a href="calc.html">Overtaxation Calculator</a>-->
+		<a href="Property Tax FAQ.pdf">Property Tax FAQ</a>
+	</div>	
+	
+	<div id="report">
+
+		<!-- <h1>Sed Valorem</h1>-->
+		<!-- <h3 style="line-height: 60%; text-align: center; color: #eb1000">[Latin]: without value</h3>-->
+		<h1>Property Tax Disparities</h1> 
+		<br>
+		<h2>in Pittsburgh, PA</h2>
+		<br>
+		<br>
+		<br>
+		<div class="diptych">
+			<div class="house">
+			  <img src="/Clear Homes 1/1A.png" alt="House1" style="width:100%">
+			  <div class="captiona">Homeowner Race: White</div>
+			  <div class="captiona">Sale Value: $300,000</div>
+			  <div class="captiona">Assessed Value: $60,500</div>
+			</div>
+			<div class="house">
+			  <img src="/Clear Homes 1/1B.png" alt="House2" style="width:100%">
+			  <div class="captionb">Homeowner Race: Black</div>
+			  <div class="captionb">Sale Value: $55,000</div>
+			  <div class="captionb">Assessed Value: $66,100</div>
+			</div>
+		  </div>
+		<div class="comparison">Difference in same-year sale value: $245,000</div>
+		<div class="comparison">Difference in same-year assessed value: -$5,600</div>
+		<br>
+
+		<p id="description">
+			The majority of U.S. municipalities chronically overtax non-white homeowners and low-value homes. We analyzed Allegheny County assessment and real estate data from 2012-2021 to reveal that during these years, the county assessed Pittsburgh’s lowest value homes at twice their same-year market value, while the highest value homes were assessed at just over half their market value. We also found that Pittsburgh’s black homes were assessed at 7.5% more, on average, than comparable white homes. 
+		</p>
+
+		<br>
+
+		<br>
+		<div class="pair">
+			<div class="term" >Property Taxes</div> 
+			<div class="def">constitute the vast majority of local government revenue in the US… they represented <span style="font-style:italic">71.8%</span> of United States local tax collections in 2019 (U.S. Census Bureau, 2021).</div>  
+		</div>
+		
+		<br>
+		<br>
+		
+		<p id="description">
+			Governments calculate the property tax for a given home by estimating it’s market value, and taking a certain percentage of that value (determined by the millage rate) for each tax-collecting body in the area.
+		</p>
+		<br>
+		<div class="pair">
+			<div class="term">Millage Rate</span></div> 
+			<div class="def">defines the total dollar amount taxed for each $1,000 of assessed property value.</div> 
+		</div>
+		<br>
+		<br> 
+		<div class="pair">
+			<div class="term">Assessment Value</span></div> 
+			<div class="def">is the dollar amount calculated by county officials to approximate the taxable, fair market value of a property.</div>  
+		</div>
+		<br>
+		<br> 
+		<div class="pair">
+			<div class="term">Effective Tax Rate</span></div> 
+			<div class="def">reflects the percentage of a property’s actual fair-market value (based on sale records) that is collected in property taxes.</div>  
+		</div>
+		<br>
+		<br>
+
+		<p id="description">
+			All millage rates for a tax-collection body are uniform, so variation in tax rates is purely related to assessment values. This is fair as long as assessment values are fairly calculated.
+		</p>
+		<br>
+
+		<div class="pair">
+			<div class="term">"Assessment Ratio"</span></div> 
+			<div class="def">is a term we use to describe a home’s assessed value divided by its transaction (sale) value for a given year.</div>  
+		</div>
+		<br>
+		<br>
+
+		<p id="description">
+			A home’s assessment ratio captures the relationship between the value on which it is taxed and the value for which it would sell.
+		</p>
+		<br>
+
+		<div class="pair">
+			<div class="term">Overtaxed</span></div> 
+			<div class="def">A home is overtaxed if its assessment ratio is <span style="font-style:italic">GREATER</span> than average. It is taxed at a higher value than it could sell for.</div>  
+		</div>
+		<br>
+		<br> 
+		<div class="pair">
+			<div class="term">Undertaxed</span></div> 
+			<div class="def">A home is undertaxed if its assessment ratio is <span style="font-style:italic">LESS</span> than average. It is taxed at a lower value than it would sell for.</div>  
+		</div>
+		<br>
+		<br>
+
+		<p id="description">
+			Most counties perform assessments regularly to keep assessment values up to date, but this is not required in Pennsylvania. Allegheny county’s most recent reassessment took place in 2012, and assessment values have been held constant since then despite local market fluctuations.
+		</p>
+
+		<br>
+		<br>
+		<div class="diptych">
+			<div class="house">
+			  <img src="/Clear Homes 1/2B.png" alt="House3" style="width:100%">
+			  <div class="captiona">Homeowner Race: White</div>
+			  <div class="captiona">Sale Value: $309,000</div>
+			  <div class="captiona">Assessed Value: $49,600</div>
+			</div>
+			<div class="house">
+			  <img src="/Clear Homes 1/2A.png" alt="House4" style="width:100%">
+			  <div class="captionb">Homeowner Race: Black</div>
+			  <div class="captionb">Sale Value: $70,000</div>
+			  <div class="captionb">Assessed Value: $51,900</div>
+			</div>
+		  </div>
+		<div class="comparison">Difference in same-year sale value: $239,000</div>
+		<div class="comparison">Difference in same-year assessed value: -$2,300</div>
+		<br>
+		<br>
+		<br>
+	
+		<p id="description">
+			Using property level data about <span style="font-style:italic">assessment value, sale price,</span> and <span style="font-style:italic">demographic information</span> for representative properties in the city of Pittsburgh, we are able to examine racial disparity in property tax assessment at a granular level.
+		</p>
+
+		<p id="description">
+			Overall, our study indicates that properties in Pittsburgh are taxed at an average of <span style="font-style:italic">72.5%</span>  of their fair market values. 
+		</p>
+
+		<h4>Fig. 1.2: Mean Assessment Ratio by Property Value</h4>
+		<div id="chartcontainer" viewBox="0 0 960 500" preserveAspectRatio="xMidYMid meet">
+			<div id="chart1"></div>
+		</div>
+		<br>
+
+		<p id="description">
+			However, this rate is not consistent across income, race, or property value. In fact, it is sharply regressive on all of these dimensions.
+		</p>
+		<br>
+
+		<div class="pair">
+			<div class="term">The lowest-valued 10%</span></div> 
+			<div class="def">of homes in Pittsburgh are taxed at a rate nearly <span style="font-style:italic">3 times</span>  that of the highest-valued 10%.</div>  
+		</div>
+		<br>
+
+		<h4>Fig. 1.3: Mean Assessment Ratio by Income Decile</h4>
+		<div id="chart2"></div>
+		<br>
+
+		<p id="description">
+			A similar trend is evident in the relationship of income to assessment ratio, where the lowest-earning homeowners are taxed at an average rate <span style="font-style:italic">1.28x higher</span> than the highest-earning homeowners.
+		</p>
+
+		<p id="description">
+			This property value and income data is tied to racial bias. Black homeowners represent a disproportionate number of the lowest-valued properties and the lowest-earning households. The heavy clustering of low-value property in Black neighborhoods combined with the over-assessment of that property results in racially biased tax regressivity. 
+		</p>
+		<br>
+		<br>
+
+		<div class="pair">
+			<div class="term">Black Homeowners</span></div> 
+			<div class="def">pay on average <span style="font-style:italic">7.5% more</span> in property taxes than white owners of similar-valued homes typically do. </div>
+		</div>  
+		<br>
+
+		<h4>Fig. 1.4: Distribution of Property Value by Race</h4>
+		<div id="chart3"></div>
+
+		<h4>Fig. 1.5: Distribution of Assessment Ratio by Race</h4>
+		<div id="chart4"></div>
+		<br>
+
+		<p id="description">
+			These distributions show that property values, and to a lesser extent assessment ratios, coincide with racial boundaries. Because Black Homeowners tend to have properties of lower value, and lower-value properties tend to be over-assessed, Black Homeowners are more likely to be over-taxed.  
+		<br>
+		<br>
+
+		<p id="description">
+			Controlling for census tract eliminates this statistically significant racial gap, indicating that racial bias in property assessment operates through location. In other words, while Black homes are not individually over-assessed, Black neighborhoods are.
+		<br>
+		<br>
+
+		<div class="pair">
+			<div class="term">Regressive Taxation</span></div> 
+			<div class="def">refers to tax policies that place more of a burden on lower-income taxpayers. </div>  
+		</div>
+		<br>
+
+		<p id="description">
+			Regressive property taxation is one element of a long history of redlining and discriminatory urban policy that has created dense clusters of low-value housing. This financial structure contributes to the consolidation of low-income homeowners in specific areas, and works to prevent them from dispersing outside of those areas.
+		<br>
+		<br>
+
+		<br>
+		<br>
+		<div class="diptych">
+			<div class="house">
+			  <img src="/Clear Homes 1/3A.png" alt="House3" style="width:100%">
+			  <div class="captiona">Homeowner Race: White</div>
+			  <div class="captiona">Sale Value: $655,000</div>
+			  <div class="captiona">Assessed Value: $470,00</div>
+			</div>
+			<div class="house">
+			  <img src="/Clear Homes 1/3B.png" alt="House4" style="width:100%">
+			  <div class="captionb">Homeowner Race: Black</div>
+			  <div class="captionb">Sale Value: $595,000</div>
+			  <div class="captionb">Assessed Value: $513,500</div>
+			</div>
+		  </div>
+		<div class="comparison">Difference in same-year sale value: $60,000</div>
+		<div class="comparison">Difference in same-year assessed value: $43,300</div>
+		<br>
+		<br>
+		<br>
+
+		<p id="description">
+			Our call to action is for the County Assessor’s office to recalibrate the assessment process in order to mitigate the regressivity of its current property taxation model. Our results show that accounting for local differences could almost entirely eliminate the racial and class-based disparities in the tax burden, and we encourage reforms in response to this conclusion.
+		<br>
+		<br>
+
+		<p id="description" style="font-style:italic;font-weight:bold">
+			We invite you to explore the map below, and discover the trends of property taxation in your neighborhood. To check if your individual home is over- or under-taxed, please evaluate its information using our <a href="#calctitle" style="color:#eb1000; text-decoration: underline;">Overtaxation Calculator</a>. For more information about this project and property taxation in Pittsburgh, have a look at our <a href="about.html" style="color:#eb1000; text-decoration: underline;">About Page</a>.
+		<br>
+		<br>
+
+	</div>
+
+	<br>
+	<br>
+
+	<div style="text-align:center">
+		<div id="mapid"></div>
+	</div>
+
+</body>
+<script src="./app.js"></script>
+</html>

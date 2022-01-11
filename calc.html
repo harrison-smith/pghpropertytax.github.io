@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Pittsburgh Property Tax Disparities</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" /> -->
+
+	<!-- Load CSS -->
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Cantarell:ital@1&display=swap');
+		</style>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Cantarell:ital@1&family=Playfair+Display&display=swap');
+		</style>
+	<link rel="stylesheet" href="./index.css"/>
+
+</head>
+<body>
+
+    <div class="menu" style="padding-bottom: 20px">
+		<a href="https://mattress.org/works/sed-valorem/"><img src='./logo.svg' style="height:20px"></img></a>
+		<a href="index.html">Report</a>
+		<a href="about.html">About This Project</a>
+        <!--<a href="calc.html">Overtaxation Calculator</a>-->
+		<a href="Property Tax FAQ_Draft1.pdf">Property Tax FAQ</a>
+	</div>	
+
+    <div id="report">
+        <br>
+        <br>
+    <div class="calculator"> 
+        <a id="calctitle" style="font-weight: bold; padding: 5px; font-size: 20px">Overtaxation Calculator for Homes Purchased after Jan. 1, 2013</a>
+        <div style="padding: 5px">Throughout this report we use assessment-to-sale ratios to measure how property taxes are levied on homeowners in the City of Pittsburgh. To see if you’re paying more than your fair share, follow the directions below:</div>
+        <div style="font-weight: bold; padding: 5px; padding-top: 10px;"> Step 1: Find assessment data for your home</div>
+        <div style="padding: 5px; padding-left: 20px">Go to the <a href="http://www2.alleghenycounty.us/RealEstate/Default.aspx" style="color:#eb1000; text-decoration: underline;">County Assessor's website</a> and search your address.</div>
+        <div style="font-weight: bold; padding: 5px; padding-top: 10px;"> Step 2: Determine your home's assessed value</div>
+        <div style="padding: 5px; padding-left: 20px">Scroll to the bottom of the page and locate “2021 Full Base Year Market Value.” The “Total Value” is the dollar amount at which the county has assessed your property. Because Allegheny County relies on a base year system, barring catastrophic circumstances, the assessed value of your property was fixed in 2012. Enter this number in the top box of the calculator.</div>
+        <div style="padding: 5px; padding-left: 20px; font-style: italic;">Note: Scroll back to the top. If next to “Homestead” in the first column, it says “No,” the homestead exemption has not yet been applied to your property. If it is your primary residence, you may be eligible to decrease the taxable value of your property by $18,000. For more information on how to apply for this exemption, please see <a href=https://www.alleghenycounty.us/real-estate/abatements-exemptions/act-50/act-50-application-process.aspx style="color:#eb1000; text-decoration: underline;">the application process</a> </div>
+        <div style="padding: 5px; padding-left: 20px">Enter the assessed value of your home below:</div>
+        <div style="padding-left: 20px; padding-bottom: 5px">
+            <input type="number" id="Assessment Value" value="130000" max="100000000"name="Assessment Value"><br>
+        </div>
+        <div style="font-weight: bold; padding: 5px; padding-top: 10px;"> Step 3: Determine your home's sale price</div>
+        <div style="padding: 5px; padding-left: 20px">Noting the year of sale, locate the price at which it sold and enter the value in the bottom box of the calculator.</div>
+        <div style="padding: 5px; padding-left: 20px">Enter the sale price and sale year (must be between 2013 and 2020) of your home below:</div>
+        <div style="padding-left: 20px; padding-bottom: 5px;">
+            <input type="number" id="Sale Price" value="150000" max="100000000"name="Sale Price" style="display: inline-block">
+            <input type="number" id="Sale Year" value="2020" max="2021"name="Sale Year" style="display: inline-block"><br>
+        </div>
+        <div style="font-weight: bold; padding: 5px; padding-top: 10px;"> Step 4: Determine your home's assessment ratio</div>
+        <div style="padding: 5px; padding-left: 20px">The assessment ratio (discussed further in the report below) is your home's assessed value divided by its sale price.</div>
+        <div style="padding: 5px; padding-left: 20px">Press the button below to output your assessment ratio.</div>
+        <div style="padding-left: 20px">
+            <input type="submit" value="Calculate Asssessment Ratio" onclick="calcratio()">
+        </div>
+        <div style="font-weight: bold; padding: 5px; padding-top: 10px;"> Step 5: Interpret your Results</div>
+        <div style="padding: 5px; padding-left: 20px">Each year, the State Tax Equalization Board publishes a list of Common Level Ratios (CLR), the median assessment ratio. Below is a comparison of your assessment ratio to the median for your home's sale year.</div>
+        <div style="padding: 5px; padding-left: 20px; font-weight: bold">Your Assessment Ratio is: <span id="ratio" style="color: #8a8a8a">0.867</span></div>
+        <div style="padding: 5px; padding-left: 20px; font-weight: bold">The CLR for your sale year is: <span id="clr" style="color: #8a8a8a">0.908</span></div>
+        <div style="padding: 5px; padding-left: 20px; font-weight: bold">Therefore, your home is <span id="overunder" style="color: #8a8a8a">OVERTAXED</span> because your assessment ratio is <span id="greaterless" style="color: #8a8a8a">GREATER THAN</span> the median.</div>
+    </div>
+
+    <br>
+    <p id="description">
+        To learn more about overtaxation and discover how you can respond if you are overtaxed, please download our <a href="Property Tax FAQ_Draft1.pdf" download style="color:#eb1000; text-decoration: underline;">Property Tax FAQ.</a>
+    </p>
+    <p id="description">
+        To explore our analysis of the racial disparities in property taxation in Pittsburgh, explore the <a href="index.html" style="color:#eb1000; text-decoration: underline;">Report.</a>.
+    </p>
+</div>
+
+</body>

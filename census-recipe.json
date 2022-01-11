@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "layers": {
+    "census": {
+    "minzoom": 0,
+    "maxzoom": 11,
+    "source": "mapbox://tileset-source/clairego/census-blocks",
+    "features": {
+    "simplification": {
+    "outward_only": true,
+    "distance": 1
+    },
+    "attributes": {
+    "set": {
+    "key": [ "concat",
+    [ "case", [ ">=", [ "zoom" ], 0 ], [ "get", "STATEFP10" ], "" ],
+    [ "case", [ ">=", [ "zoom" ], 5 ], [ "get", "COUNTYFP10" ], "" ],
+    [ "case", [ ">=", [ "zoom" ], 8 ], [ "get", "TRACTCE10" ], "" ],
+    [ "case", [ ">=", [ "zoom" ], 11 ], [ "get", "BLOCKCE10" ], "" ]
+    ]
+    }
+    }
+    },
+    "tiles": {
+    "union": [
+    {
+    "group_by": [ "key" ],
+    "aggregate": {
+    "ALAND10": "sum"
+    },
+    "simplification": {
+    "distance": 4,
+    "outward_only": false
+    }
+    }
+    ]
+    }
+    }
+    }
+    }
